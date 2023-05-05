@@ -18,7 +18,21 @@ Route::get('/', function () {
 });
 
 Route::post('/task', function (Request $request) {
-
+    request()->validate(
+        [
+            'name' => 'required|unique:tasks|min:3|max:255'
+        ],
+        [
+            'name.required' => 'タスク内容を入力してください',
+            'name.unique' => 'そのタスクは既に追加されています',
+            'name.min' => '3文字以上で入力してください',
+            'name.max' => '255文字以内で入力してください'
+        ]
+    );
+    $task = new Task(); //Taskモデルから新しいインスタンスを作成し変数$taskに代入
+    $task->name = request('name'); //HTTPリクエストのパラメータからタスクの名前を取得し変数$taskに割り当て
+    $task->save(); //$taskをDBに保存
+    return redirect('/'); //アプリのホーム'/'にリダイレクトする
 });
 
 Route::delete('/task', function () {
