@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('tasks');
+    return view('tasks', [
+        'tasks' => App\Task::latest()->get()
+    ]);
 });
 
 Route::post('/task', function (Request $request) {
@@ -37,6 +39,7 @@ Route::post('/task', function (Request $request) {
     return redirect('/'); //アプリのホーム'/'にリダイレクトする
 });
 
-Route::delete('/task', function () {
-
+Route::delete('/task', function (Task $task) {
+    $task->delete();
+    return redirect('/');
 });
