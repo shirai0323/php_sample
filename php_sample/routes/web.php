@@ -19,9 +19,11 @@ Route::get('/', function () {
 
 Route::post('/task', function (Request $request) {
     request()->validate(
+        // バリデーションの定義
         [
             'name' => 'required|unique:tasks|min:3|max:255'
         ],
+        // エラーメッセージの定義
         [
             'name.required' => 'タスク内容を入力してください',
             'name.unique' => 'そのタスクは既に追加されています',
